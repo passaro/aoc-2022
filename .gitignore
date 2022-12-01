@@ -1,3 +1,4 @@
 target/
 .session
 .input/
+.DS_Store
