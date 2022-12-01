@@ -10,12 +10,25 @@ use std::time::{Duration, Instant};
 /// model of the data for the day's solution.
 trait FromInput {
     fn from_lines(lines: impl Iterator<Item = String>) -> Self;
+
+    fn from_sample(sample: &str) -> Self 
+    where Self: Sized {
+        Self::from_lines(sample.lines().map(|l| l.to_owned()))
+    }
 }
 
 /// Solutions for a day of Advent of Code.
 trait DaySolution {
-    fn part_one(&self) -> String;
-    fn part_two(&self) -> String;
+    fn part_one(&self) -> Option<String>;
+    fn part_two(&self) -> Option<String>;
+
+    fn solve(&self) {
+        let (part_one, duration) = time_execution(|| self.part_one());
+        println!("Part 1: {} ({} seconds)", part_one.as_deref().unwrap_or("<missing>"), duration.as_secs_f32());
+
+        let (part_two, duration) = time_execution(|| self.part_two());
+        println!("Part 2: {} ({} seconds)", part_two.as_deref().unwrap_or("<missing>"), duration.as_secs_f32());
+    }
 }
 
 /// Reads the input for a day from the `.input` directory.
@@ -23,7 +36,7 @@ fn load_input(day: usize) -> impl Iterator<Item = String> {
     let file = std::fs::OpenOptions::new()
         .read(true)
         .open(format!(".input/{day}.txt"))
-        .expect("Failed to access data for day");
+        .expect(&format!("Failed to access data for day {}", day));
     let buffered_file = BufReader::new(file);
 
     buffered_file
@@ -35,12 +48,12 @@ fn load_input(day: usize) -> impl Iterator<Item = String> {
 fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn DaySolution> {
     match day {
         1 => Box::new(Day1::from_lines(lines)),
-        _other => panic!("Day hasn't been solved yet"),
+        _other => panic!("Day {} hasn't been solved yet", day),
     }
 }
 
 /// Times the execution of a function.
-fn time_execution(work: impl FnOnce() -> String) -> (String, Duration) {
+fn time_execution<T>(work: impl FnOnce() -> T) -> (T, Duration) {
     let start = Instant::now();
     let result = work();
     let duration = start.elapsed();
@@ -58,10 +71,5 @@ fn main() {
     let input = load_input(day);
     let solution = get_day_solution(day, input);
     println!("Solving day {day}...");
-
-    let (part_one, duration) = time_execution(|| solution.part_one());
-    println!("Part 1: {part_one} ({} seconds)", duration.as_secs_f32());
-
-    let (part_two, duration) = time_execution(|| solution.part_two());
-    println!("Part 2: {part_two} ({} seconds)", duration.as_secs_f32());
+    solution.solve();
 }

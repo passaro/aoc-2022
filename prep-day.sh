@@ -62,12 +62,12 @@ impl FromInput for Day$1 {
 }
 
 impl DaySolution for Day$1 {
-    fn part_one(&self) -> String {
-        todo!("Solve part one of day $1 using your parsed input")
+    fn part_one(&self) -> Option<String> {
+        None
     }
 
-    fn part_two(&self) -> String {
-        todo!("Solve part two of day $1 using your parsed input")
+    fn part_two(&self) -> Option<String> {
+        None
     }
 }
 EOF
