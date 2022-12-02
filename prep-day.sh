@@ -45,9 +45,12 @@ if test -e "src/day$1.rs"; then
 else
   echo "Creating boilerplate module for day $1 at src/day$1.rs..."
   echo "Remember to update main.rs:"
-  echo "  - Add 'mod day$1;'"
-  echo "  - Add 'use day$1::Day$1;'"
-  echo "  - Update 'get_day_solution' to use 'Day$1'"
+  echo "  - Add:"
+  echo "mod day$1;"
+  echo "use day$1::Day$1;"
+  echo ""
+  echo "  - Update 'get_day_solution' to use 'Day$1':"
+  echo "$1 => Box::new(Day$1::from_lines(lines)),"
 
   cat <<-EOF > "src/day$1.rs"
 use crate::{DaySolution, FromInput};
@@ -68,6 +71,20 @@ impl DaySolution for Day$1 {
 
     fn part_two(&self) -> Option<String> {
         None
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const SAMPLE: &str = r"
+    ";
+
+    #[test]
+    fn test_sample() {
+        let day = Day$1::from_sample(SAMPLE);
+        day.solve();
     }
 }
 EOF

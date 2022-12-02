@@ -1,6 +1,7 @@
 mod day1;
 use day1::Day1;
-
+mod day2;
+use day2::Day2;
 
 use std::env;
 use std::io::{BufRead, BufReader};
@@ -48,6 +49,7 @@ fn load_input(day: usize) -> impl Iterator<Item = String> {
 fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn DaySolution> {
     match day {
         1 => Box::new(Day1::from_lines(lines)),
+        2 => Box::new(Day2::from_lines(lines)),
         _other => panic!("Day {} hasn't been solved yet", day),
     }
 }
