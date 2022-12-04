@@ -4,6 +4,8 @@ mod day2;
 use day2::Day2;
 mod day3;
 use day3::Day3;
+mod day4;
+use day4::Day4;
 
 
 use std::env;
@@ -54,6 +56,7 @@ fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn 
         1 => Box::new(Day1::from_lines(lines)),
         2 => Box::new(Day2::from_lines(lines)),
         3 => Box::new(Day3::from_lines(lines)),
+        4 => Box::new(Day4::from_lines(lines)),
         _other => panic!("Day {} hasn't been solved yet", day),
     }
 }
