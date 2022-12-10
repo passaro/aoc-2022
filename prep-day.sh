@@ -47,15 +47,12 @@ else
   echo "Remember to update main.rs:"
   echo "  - Add:"
   echo "mod day$1;"
-  echo "use day$1::Day$1;"
   echo ""
-  echo "  - Update 'get_day_solution' to use 'Day$1':"
-  echo "$1 => Box::new(Day$1::from_lines(lines)),"
+  echo "  - Update 'solve_day' by adding $1"
 
   cat <<-EOF > "src/day$1.rs"
 use crate::{DaySolution, FromInput};
 
-// TODO: Model the problem into this struct
 pub struct Day$1;
 
 impl FromInput for Day$1 {

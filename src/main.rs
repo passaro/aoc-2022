@@ -1,23 +1,13 @@
 mod day1;
-use day1::Day1;
 mod day2;
-use day2::Day2;
 mod day3;
-use day3::Day3;
 mod day4;
-use day4::Day4;
 mod day5;
-use day5::Day5;
 mod day6;
-use day6::Day6;
 mod day7;
-use day7::Day7;
 mod day8;
-use day8::Day8;
 mod day9;
-use day9::Day9;
 mod day10;
-use day10::Day10;
 
 
 use std::env;
@@ -62,21 +52,23 @@ fn load_input(day: usize) -> impl Iterator<Item = String> {
         .map(|line| line.expect("Failed to read line from data file"))
 }
 
-/// Gets the solution for the given day as a trait object.
-fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn DaySolution> {
-    match day {
-        1 => Box::new(Day1::from_lines(lines)),
-        2 => Box::new(Day2::from_lines(lines)),
-        3 => Box::new(Day3::from_lines(lines)),
-        4 => Box::new(Day4::from_lines(lines)),
-        5 => Box::new(Day5::from_lines(lines)),
-        6 => Box::new(Day6::from_lines(lines)),
-        7 => Box::new(Day7::from_lines(lines)),
-        8 => Box::new(Day8::from_lines(lines)),
-        9 => Box::new(Day9::from_lines(lines)),
-        10 => Box::new(Day10::from_lines(lines)),
-        _other => panic!("Day {} hasn't been solved yet", day),
+fn solve_day(day: usize, lines: impl Iterator<Item = String>) {
+    macro_rules! match_day_and_solve {
+        ($day:ident, $lines:expr, $($value:expr),* $(,)?) => { 
+            paste::paste! {
+                let day = $day;
+                let lines = $lines;
+                match day {
+                $(
+                    $value => [<day $value>]::[<Day $value>]::from_lines(lines).solve(),
+                )*
+                    _other => panic!("Day {} hasn't been solved yet", day),
+                }
+            }
+        };
     }
+    
+    match_day_and_solve!(day, lines, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 }
 
 /// Times the execution of a function.
@@ -96,7 +88,6 @@ fn main() {
         .expect("Provided day wasn't a valid integer");
 
     let input = load_input(day);
-    let solution = get_day_solution(day, input);
     println!("Solving day {day}...");
-    solution.solve();
+    solve_day(day, input);
 }
