@@ -34,12 +34,14 @@ trait DaySolution {
     fn part_one(&self) -> Option<String>;
     fn part_two(&self) -> Option<String>;
 
-    fn solve(&self) {
+    fn solve(&self) -> (Option<String>, Option<String>) {
         let (part_one, duration) = time_execution(|| self.part_one());
         println!("Part 1: {} ({} seconds)", part_one.as_deref().unwrap_or("<missing>"), duration.as_secs_f32());
 
         let (part_two, duration) = time_execution(|| self.part_two());
         println!("Part 2: {} ({} seconds)", part_two.as_deref().unwrap_or("<missing>"), duration.as_secs_f32());
+
+        (part_one, part_two)
     }
 }
 
@@ -56,15 +58,23 @@ fn load_input(day: usize) -> impl Iterator<Item = String> {
         .map(|line| line.expect("Failed to read line from data file"))
 }
 
-fn solve_day(day: usize, lines: impl Iterator<Item = String>) {
-    macro_rules! match_day_and_solve {
-        ($day:ident, $lines:expr, $($value:expr),* $(,)?) => { 
+fn solve_day(day: usize, lines: impl Iterator<Item = String>) -> (Option<String>, Option<String>) {
+    macro_rules! day_name {
+        ($value:expr) => {
             paste::paste! {
+                [<day $value>]::[<Day $value>]
+            }
+        };
+    }
+
+    macro_rules! match_day_and_solve {
+        ($day:ident, $lines:expr, $($value:expr),* $(,)?) => {
+            {
                 let day = $day;
                 let lines = $lines;
                 match day {
                 $(
-                    $value => [<day $value>]::[<Day $value>]::from_lines(lines).solve(),
+                    $value => <day_name!($value)>::from_lines(lines).solve(),
                 )*
                     _other => panic!("Day {} hasn't been solved yet", day),
                 }
@@ -72,7 +82,7 @@ fn solve_day(day: usize, lines: impl Iterator<Item = String>) {
         };
     }
 
-    match_day_and_solve!(day, lines, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+    match_day_and_solve!(day, lines, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 }
 
 /// Times the execution of a function.
@@ -94,4 +104,16 @@ fn main() {
     let input = load_input(day);
     println!("Solving day {day}...");
     solve_day(day, input);
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_day1() {
+        let (part_one, part_two) = solve_day(1, load_input(1));
+        assert_eq!(part_one, Some("71300".to_string()));
+        assert_eq!(part_two, Some("209691".to_string()));
+    }
 }
