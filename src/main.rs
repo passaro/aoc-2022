@@ -9,6 +9,7 @@ mod day8;
 mod day9;
 mod day10;
 mod day11;
+mod day12;
 
 
 use std::env;
@@ -69,7 +70,7 @@ fn solve_day(day: usize, lines: impl Iterator<Item = String>) {
         };
     }
 
-    match_day_and_solve!(day, lines, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+    match_day_and_solve!(day, lines, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 }
 
 /// Times the execution of a function.
