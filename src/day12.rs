@@ -1,5 +1,6 @@
 use itertools::Itertools;
 use pathfinding::dijkstra;
+use rayon::prelude::*;
 
 use crate::{DaySolution, FromInput};
 
@@ -48,6 +49,8 @@ impl DaySolution for Day12 {
             .cartesian_product(0..self.col_count)
             .map(|(y, x)| Position::new(x, y))
             .filter(|p| self.at(p) == 0)
+            .collect_vec()
+            .par_iter()
             .filter_map(|p| self.shortest_climb(&p))
             .min();
 
