@@ -12,6 +12,8 @@ mod day11;
 mod day12;
 
 
+mod grid;
+
 use std::env;
 use std::io::{BufRead, BufReader};
 use std::time::{Duration, Instant};

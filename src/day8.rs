@@ -1,50 +1,34 @@
-use itertools::Itertools;
 use take_until::TakeUntilExt;
 
-use crate::{DaySolution, FromInput};
+use crate::{DaySolution, FromInput, grid::{Grid, Position}};
 
 #[derive(Debug)]
 pub struct Day8 {
-    col_count: usize,
-    row_count: usize,
-    heights: Vec<u8>,
+    heights: Grid<u8>,
 }
 
 impl FromInput for Day8 {
     fn from_lines(lines: impl Iterator<Item = String>) -> Self {
-        let mut heights = Vec::new();
-        let mut col_count = 0;
-        let mut row_count = 0;
-        for line in lines.filter(|l| !l.trim().is_empty()) {
-            col_count = line.len();
-            row_count += 1;
-            for h in line.chars().map(|c| String::from(c).parse().expect("invalid height")) {
-                heights.push(h);
-            }
-        }
-
-        Self { col_count, row_count, heights }
+        let heights = Grid::from_lines(lines, |c, _| {
+            String::from(c).parse().expect("invalid height")
+        });
+        
+        Self { heights }
     }
 }
 
 impl DaySolution for Day8 {
     fn part_one(&self) -> Option<String> {
-        let mut visible = 0;
-        for col in 0..self.col_count {
-            for row in 0..self.row_count {
-                if self.visible(row, col) {
-                    visible += 1;
-                }
-            }
-        }
+        let visible = self.heights.positions()
+            .filter(|p| self.visible(p))
+            .count();
 
         Some(visible.to_string())
     }
 
     fn part_two(&self) -> Option<String> {
-        let max_scenic_score = (1..(self.row_count-1))
-            .cartesian_product(1..(self.col_count-1))
-            .map(|(r,c)| self.scenic_score(r, c))
+        let max_scenic_score = self.heights.positions()
+            .map(|p| self.scenic_score(&p))
             .max();
 
         Some(max_scenic_score.expect("no trees").to_string())
@@ -52,27 +36,23 @@ impl DaySolution for Day8 {
 }
 
 impl Day8 {
-    fn at(&self, row: usize, column: usize) -> u8 {
-        self.heights[row * self.col_count + column]
-    }
+    fn visible(&self, pos: &Position) -> bool {
+        let height = self.heights.at(pos);
 
-    fn visible(&self, row: usize, column: usize) -> bool {
-        let height = self.at(row, column);
-
-        !(0..row).any(|r| self.at(r, column) >= height) ||
-        !(0..column).any(|c| self.at(row, c) >= height) ||
-        !((row+1)..self.row_count).any(|r| self.at(r, column) >= height) ||
-        !((column+1)..self.col_count).any(|c| self.at(row, c) >= height)
+        !(0..pos.y).any(|y| self.heights.at(&Position::new(pos.x, y)) >= height) ||
+        !(0..pos.x).any(|x| self.heights.at(&Position::new(x, pos.y)) >= height) ||
+        !((pos.y+1)..self.heights.row_count).any(|y| self.heights.at(&Position::new(pos.x, y)) >= height) ||
+        !((pos.x+1)..self.heights.col_count).any(|x| self.heights.at(&Position::new(x, pos.y)) >= height)
     }
 
 
-    fn scenic_score(&self, row: usize, column: usize) -> usize {
-        let height = self.at(row, column);
+    fn scenic_score(&self, pos: &Position) -> usize {
+        let height = self.heights.at(pos);
 
-        let up = (0..row).rev().take_until(|&r| self.at(r, column) >= height).count();
-        let down = ((row+1)..self.row_count).take_until(|&r| self.at(r, column) >= height).count();
-        let left = (0..column).rev().take_until(|&c| self.at(row, c) >= height).count();
-        let right = ((column+1)..self.col_count).take_until(|&c| self.at(row, c) >= height).count();
+        let up = (0..pos.y).rev().take_until(|&y| self.heights.at(&Position::new(pos.x, y)) >= height).count();
+        let down = ((pos.y+1)..self.heights.row_count).take_until(|&y| self.heights.at(&Position::new(pos.x, y)) >= height).count();
+        let left = (0..pos.x).rev().take_until(|&x| self.heights.at(&Position::new(x, pos.y)) >= height).count();
+        let right = ((pos.x+1)..self.heights.col_count).take_until(|&x| self.heights.at(&Position::new(x, pos.y)) >= height).count();
 
         up * down * left * right
     }
