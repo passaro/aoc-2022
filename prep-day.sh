@@ -57,7 +57,7 @@ pub struct Day$1;
 
 impl FromInput for Day$1 {
     fn from_lines(lines: impl Iterator<Item = String>) -> Self {
-        todo!("Parse your input from the input file")
+        Self
     }
 }
 
@@ -73,6 +73,8 @@ impl DaySolution for Day$1 {
 
 #[cfg(test)]
 mod test {
+    use crate::solution::{test::test_day, load_input};
+
     use super::*;
 
     const SAMPLE: &str = r"
@@ -80,8 +82,16 @@ mod test {
 
     #[test]
     fn test_sample() {
-        let day = Day$1::from_sample(SAMPLE);
-        day.solve();
+        test_day(Day$1::from_sample(SAMPLE), 
+            Solution::NotImplemented, 
+            Solution::NotImplemented);
+    }
+
+    #[test]
+    fn test_input() {
+        test_day(Day$1::from_lines(load_input($1)), 
+            Solution::NotImplemented, 
+            Solution::NotImplemented);
     }
 }
 EOF

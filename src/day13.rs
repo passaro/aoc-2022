@@ -118,6 +118,8 @@ impl FromStr for Value {
 
 #[cfg(test)]
 mod test {
+    use crate::solution::{test::test_day, load_input};
+
     use super::*;
 
     const SAMPLE: &str = r"[1,1,3,1,1]
@@ -146,7 +148,15 @@ mod test {
 
     #[test]
     fn test_sample() {
-        let day = Day13::from_sample(SAMPLE);
-        day.solve();
+        test_day(Day13::from_sample(SAMPLE), 
+            Solution::Unsigned(13), 
+            Solution::Unsigned(140));
+    }
+
+    #[test]
+    fn test_input() {
+        test_day(Day13::from_lines(load_input(13)), 
+            Solution::Unsigned(5208), 
+            Solution::Unsigned(25792));
     }
 }

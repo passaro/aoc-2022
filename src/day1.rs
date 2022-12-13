@@ -57,6 +57,8 @@ impl DaySolution for Day1 {
 
 #[cfg(test)]
 mod test {
+    use crate::solution::{test::test_day, load_input};
+
     use super::*;
 
     const SAMPLE: &str = r"1000
@@ -77,7 +79,15 @@ mod test {
 
     #[test]
     fn test_sample() {
-        let day = Day1::from_sample(SAMPLE);
-        day.solve();
+        test_day(Day1::from_sample(SAMPLE), 
+            Solution::Unsigned(24000), 
+            Solution::Unsigned(45000));
+    }
+
+    #[test]
+    fn test_input() {
+        test_day(Day1::from_lines(load_input(1)), 
+            Solution::Unsigned(71300), 
+            Solution::Unsigned(209691));
     }
 }

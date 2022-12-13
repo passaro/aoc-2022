@@ -1,4 +1,4 @@
-use std::{time::{Duration, Instant}, fmt::Display};
+use std::{time::{Duration, Instant}, fmt::Display, io::{BufReader, BufRead}};
 
 /// Solutions for a day of Advent of Code.
 pub trait DaySolution {
@@ -59,4 +59,28 @@ fn time_execution<T>(work: impl FnOnce() -> T) -> (T, Duration) {
     let duration = start.elapsed();
 
     (result, duration)
+}
+
+/// Reads the input for a day from the `.input` directory.
+pub fn load_input(day: usize) -> impl Iterator<Item = String> {
+    let file = std::fs::OpenOptions::new()
+        .read(true)
+        .open(format!(".input/{day}.txt"))
+        .expect(&format!("Failed to access data for day {}", day));
+    let buffered_file = BufReader::new(file);
+
+    buffered_file
+        .lines()
+        .map(|line| line.expect("Failed to read line from data file"))
+}
+
+#[cfg(test)]
+pub mod test {
+    use super::*;
+
+    pub fn test_day(day: impl DaySolution, solution_one: Solution, solution_two: Solution) {
+        let (part_one, part_two) = day.solve();
+        assert_eq!(part_one, solution_one);
+        assert_eq!(part_two, solution_two);
+    }
 }

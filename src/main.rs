@@ -14,22 +14,12 @@ mod day13;
 
 mod grid;
 mod solution;
+
+use std::env;
+
 use solution::{DaySolution, FromInput, Solution};
 
-use std::{env, io::{BufReader, BufRead}};
-
-/// Reads the input for a day from the `.input` directory.
-fn load_input(day: usize) -> impl Iterator<Item = String> {
-    let file = std::fs::OpenOptions::new()
-        .read(true)
-        .open(format!(".input/{day}.txt"))
-        .expect(&format!("Failed to access data for day {}", day));
-    let buffered_file = BufReader::new(file);
-
-    buffered_file
-        .lines()
-        .map(|line| line.expect("Failed to read line from data file"))
-}
+use crate::solution::load_input;
 
 fn solve_day(day: usize, lines: impl Iterator<Item = String>) -> (Solution, Solution) {
     macro_rules! day_name {
@@ -68,23 +58,4 @@ fn main() {
     let input = load_input(day);
     println!("Solving day {day}...");
     solve_day(day, input);
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_day1() {
-        let (part_one, part_two) = solve_day(1, load_input(1));
-        assert_eq!(part_one, Solution::Unsigned(71300));
-        assert_eq!(part_two, Solution::Unsigned(209691));
-    }
-
-    #[test]
-    fn test_day13() {
-        let (part_one, part_two) = solve_day(13, load_input(13));
-        assert_eq!(part_one, Solution::Unsigned(5208));
-        assert_eq!(part_two, Solution::Unsigned(25792));
-    }
 }
