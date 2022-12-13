@@ -117,4 +117,11 @@ mod test {
         assert_eq!(part_one, Some("71300".to_string()));
         assert_eq!(part_two, Some("209691".to_string()));
     }
+
+    #[test]
+    fn test_day13() {
+        let (part_one, part_two) = solve_day(13, load_input(13));
+        assert_eq!(part_one, Some("5208".to_string()));
+        assert_eq!(part_two, Some("25792".to_string()));
+    }
 }
