@@ -2,7 +2,8 @@ use itertools::Itertools;
 use pathfinding::dijkstra;
 use rayon::prelude::*;
 
-use crate::{DaySolution, FromInput, grid::{Grid, Position}};
+use crate::solution::{DaySolution, FromInput, Solution};
+use crate::grid::{Grid, Position};
 
 #[derive(Debug)]
 pub struct Day12 {
@@ -28,13 +29,13 @@ impl FromInput for Day12 {
 }
 
 impl DaySolution for Day12 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let shortest = self.shortest_climb_from_start();
 
-        shortest.map(|s| s.to_string())
+        Solution::Unsigned(shortest.expect("no path"))
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let shortest = self.heights.positions()
             .filter(|p| *self.heights.at(p) == 0)
             .collect_vec()
@@ -42,7 +43,7 @@ impl DaySolution for Day12 {
             .filter_map(|p| self.shortest_climb(&p))
             .min();
 
-        shortest.map(|s| s.to_string())
+        Solution::Unsigned(shortest.expect("no path"))
     }
 }
 

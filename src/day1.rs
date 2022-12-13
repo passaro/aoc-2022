@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day1 {
     calories: Vec<u32>,
@@ -36,22 +36,22 @@ impl FromInput for Day1 {
 }
 
 impl DaySolution for Day1 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let max = self.calories
             .iter()
             .max()
             .expect("no elves");
-        Some(format!("{}", max))
+        Solution::Unsigned(*max as usize)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let sum_max_3: u32 = self.calories
             .iter()
             .sorted()
             .rev()
             .take(3)
             .sum();
-        Some(format!("{}", sum_max_3))
+        Solution::Unsigned(sum_max_3 as usize)
     }
 }
 

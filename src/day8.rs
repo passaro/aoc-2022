@@ -1,6 +1,7 @@
 use take_until::TakeUntilExt;
 
-use crate::{DaySolution, FromInput, grid::{Grid, Position}};
+use crate::solution::{DaySolution, FromInput, Solution};
+use crate::grid::{Grid, Position};
 
 #[derive(Debug)]
 pub struct Day8 {
@@ -18,20 +19,20 @@ impl FromInput for Day8 {
 }
 
 impl DaySolution for Day8 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let visible = self.heights.positions()
             .filter(|p| self.visible(p))
             .count();
 
-        Some(visible.to_string())
+        Solution::Unsigned(visible)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let max_scenic_score = self.heights.positions()
             .map(|p| self.scenic_score(&p))
             .max();
 
-        Some(max_scenic_score.expect("no trees").to_string())
+        Solution::Unsigned(max_scenic_score.expect("no trees"))
     }
 }
 

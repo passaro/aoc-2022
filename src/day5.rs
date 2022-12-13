@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 
 pub struct Day5 {
@@ -52,24 +52,24 @@ impl FromInput for Day5 {
 }
 
 impl DaySolution for Day5 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let mut stacks = self.stacks.clone();
         for m in self.moves.iter() {
             apply_move(&mut stacks, m);
         }
 
         let top = get_tops(&stacks);
-        Some(top)
+        Solution::String(top)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let mut stacks = self.stacks.clone();
         for m in self.moves.iter() {
             apply_move_9001(&mut stacks, m);
         }
 
         let top = get_tops(&stacks);
-        Some(top)
+        Solution::String(top)
     }
 }
 

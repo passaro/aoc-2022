@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day7 {
     output: Vec<String>,
@@ -16,7 +16,7 @@ impl FromInput for Day7 {
 }
 
 impl DaySolution for Day7 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let file_sizes = extract_file_sizes(&self.output);    
         let dir_sizes = calculate_dir_sizes(file_sizes);
 
@@ -24,10 +24,10 @@ impl DaySolution for Day7 {
             .filter(|&&size| size <= 100000)
             .sum();
 
-        Some(sum.to_string())
+        Solution::Unsigned(sum)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let file_sizes = extract_file_sizes(&self.output);    
         let dir_sizes = calculate_dir_sizes(file_sizes);
 
@@ -37,7 +37,7 @@ impl DaySolution for Day7 {
         let used_space = *dir_sizes.get("/").expect("no root");
 
         if total_space < used_space || required_free_space <= (total_space - used_space) {
-            return None;
+            panic!("No solution found");
         }
 
         let needed_space =  required_free_space - (total_space - used_space);
@@ -46,7 +46,7 @@ impl DaySolution for Day7 {
             .min()
             .expect("no directory to delete");
             
-        Some(to_delete.to_string())
+        Solution::Unsigned(*to_delete)
     }
 }
 

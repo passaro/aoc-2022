@@ -2,7 +2,7 @@ use std::{str::FromStr, cmp::Ordering};
 
 use itertools::{Itertools, EitherOrBoth};
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day13 {
     pairs: Vec<(Value, Value)>,
@@ -23,17 +23,17 @@ impl FromInput for Day13 {
 }
 
 impl DaySolution for Day13 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let sum: usize = self.pairs.iter()
             .enumerate()
             .filter(|(_, (a,b))| { a <= b })
             .map(|(i, _)| i + 1)
             .sum();
 
-        Some(sum.to_string())
+        Solution::Unsigned(sum)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let mut packets = Vec::with_capacity(self.pairs.len() * 2 + 2);
         for (a,b) in &self.pairs  {
             packets.push(a);
@@ -50,7 +50,7 @@ impl DaySolution for Day13 {
             .map(|(i, _)| i + 1)
             .product();
 
-        Some(decoder_key.to_string())
+        Solution::Unsigned(decoder_key)
     }
 }
 

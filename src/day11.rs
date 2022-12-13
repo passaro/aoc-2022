@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use itertools::Itertools;
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day11 {
     monkeys: Vec<Monkey>,
@@ -60,14 +60,14 @@ impl FromInput for Day11 {
 }
 
 impl DaySolution for Day11 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let monkey_business = self.monkey_business(20, 3);
-        Some(monkey_business.to_string())
+        Solution::Unsigned(monkey_business)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let monkey_business = self.monkey_business(10000, 1);
-        Some(monkey_business.to_string())
+        Solution::Unsigned(monkey_business)
     }
 }
 

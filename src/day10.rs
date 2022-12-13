@@ -2,7 +2,7 @@ use std::{str::FromStr, iter::once};
 
 use itertools::Itertools;
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 
 pub struct Day10 {
@@ -41,7 +41,7 @@ impl FromStr for Instruction {
 }
 
 impl DaySolution for Day10 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
 
         let sum: isize = self.register_x_values()
             .enumerate()
@@ -49,10 +49,10 @@ impl DaySolution for Day10 {
             .map(|(cycle, x)| x * cycle as isize)
             .sum();
         
-        Some(sum.to_string())
+        Solution::Signed(sum)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
          let screen = self.register_x_values().skip(1)
             .zip((0isize..40).cycle())
             .map(|(x, p)| {
@@ -62,7 +62,7 @@ impl DaySolution for Day10 {
             .map(|line| format!("\n{}", line.into_iter().join("")))
             .join("");
 
-        Some(screen)
+        Solution::String(screen)
     }
 }
 

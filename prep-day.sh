@@ -51,7 +51,7 @@ else
   echo "  - Update 'solve_day' by adding $1"
 
   cat <<-EOF > "src/day$1.rs"
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day$1;
 
@@ -62,12 +62,12 @@ impl FromInput for Day$1 {
 }
 
 impl DaySolution for Day$1 {
-    fn part_one(&self) -> Option<String> {
-        None
+    fn part_one(&self) -> Solution {
+        Solution::NotImplemented
     }
 
-    fn part_two(&self) -> Option<String> {
-        None
+    fn part_two(&self) -> Solution {
+        Solution::NotImplemented
     }
 }
 

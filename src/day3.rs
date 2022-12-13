@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use itertools::Itertools;
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day3 {
     items: Vec<String>,
@@ -27,7 +27,7 @@ fn priority(item: &char) -> u32 {
 }
 
 impl DaySolution for Day3 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         fn find_misplaced(rucksack: &str) -> Option<char> {
             let (first, second) = rucksack.split_at(rucksack.len() / 2);
             let first = first.chars().collect::<HashSet<char>>();
@@ -41,10 +41,10 @@ impl DaySolution for Day3 {
             .map(|item| { priority(&item)} )
             .sum::<u32>();
 
-        Some(sum.to_string())
+        Solution::Unsigned(sum as usize)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let sum = self.items.iter()
             .chunks(3).into_iter()
             .filter_map(|team| team.map(|r| 
@@ -53,7 +53,7 @@ impl DaySolution for Day3 {
             .map(|item| { priority(&item)} )
             .sum::<u32>();
 
-        Some(sum.to_string())
+        Solution::Unsigned(sum as usize)
     }
 }
 

@@ -2,7 +2,7 @@ use std::ops::RangeInclusive;
 
 use itertools::Itertools;
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day4 {
     range_pairs: Vec<(RangeInclusive<u32>,RangeInclusive<u32>)>
@@ -26,7 +26,7 @@ impl FromInput for Day4 {
 }
 
 impl DaySolution for Day4 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         fn fully_contains(a: &RangeInclusive<u32>, b: &RangeInclusive<u32>) -> bool {
             a.start() <= b.start() && a.end() >= b.end()
         }
@@ -35,10 +35,10 @@ impl DaySolution for Day4 {
             .filter(|p| fully_contains(&p.0, &p.1) || fully_contains(&p.1, &p.0))
             .count();
 
-        Some(count.to_string())
+        Solution::Unsigned(count)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         fn overlap(a: &RangeInclusive<u32>, b: &RangeInclusive<u32>) -> bool {
             a.start() <= b.end() && a.end() >= b.start()
         }
@@ -47,7 +47,7 @@ impl DaySolution for Day4 {
             .filter(|p| overlap(&p.0, &p.1))
             .count();
 
-        Some(count.to_string())
+        Solution::Unsigned(count)
     }
 }
 

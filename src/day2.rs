@@ -1,4 +1,4 @@
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day2 {
     matches: Vec<(String, String)>,
@@ -101,7 +101,7 @@ impl FromInput for Day2 {
 }
 
 impl DaySolution for Day2 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let score: u32 = self.matches
             .iter()
             .map(|(a, b)| 
@@ -109,10 +109,10 @@ impl DaySolution for Day2 {
                  HandShape::from_string(b).expect("Invalid shape")))
             .map(|(opponent, you)| you.score_against(&opponent))
             .sum();
-        Some(score.to_string())
+        Solution::Unsigned(score as usize)
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let score: u32 = self.matches
             .iter()
             .map(|(a, b)| 
@@ -120,7 +120,7 @@ impl DaySolution for Day2 {
                  Outcome::from_string(b).expect("Invalid outcome")))
             .map(|(opponent, outcome)| outcome.score() + outcome.shape_against(&opponent).value())
             .sum();
-        Some(score.to_string())
+        Solution::Unsigned(score as usize)
     }
 }
 

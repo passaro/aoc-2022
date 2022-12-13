@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use itertools::Itertools;
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day6 {
     datastream: String,
@@ -16,18 +16,19 @@ impl FromInput for Day6 {
 }
 
 impl DaySolution for Day6 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         for ((_, c0), (_, c1), (_, c2), (i, c3)) in self.datastream.char_indices().into_iter().tuple_windows() {
             if c0 != c1 && c0 != c2 && c0 != c3 && c1 != c2 && c1 != c3 && c2 != c3 {
-                return Some((i + 1).to_string());
+                return Solution::Unsigned(i + 1);
             }
         }
 
-        None
+        panic!("No solution found")
     }
 
-    fn part_two(&self) -> Option<String> {
-        find_first_unique_seq(&self.datastream, 14).map(|i| i.to_string())
+    fn part_two(&self) -> Solution {
+        let i = find_first_unique_seq(&self.datastream, 14).map(|i| i).expect("No solution found");
+        Solution::Unsigned(i)
     }
 }
 

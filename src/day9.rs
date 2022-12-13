@@ -1,6 +1,6 @@
 use std::{str::FromStr, collections::HashSet};
 
-use crate::{DaySolution, FromInput};
+use crate::solution::{DaySolution, FromInput, Solution};
 
 pub struct Day9 {
     moves: Vec<Move>,
@@ -14,7 +14,7 @@ impl FromInput for Day9 {
 }
 
 impl DaySolution for Day9 {
-    fn part_one(&self) -> Option<String> {
+    fn part_one(&self) -> Solution {
         let mut head = Position::new();
         let mut tail = Position::new();
 
@@ -27,10 +27,10 @@ impl DaySolution for Day9 {
             }
         }
 
-        Some(visited.len().to_string())
+        Solution::Unsigned(visited.len())
     }
 
-    fn part_two(&self) -> Option<String> {
+    fn part_two(&self) -> Solution {
         let mut rope = [Position::new(); 10];
 
         let mut visited = HashSet::new();
@@ -47,7 +47,7 @@ impl DaySolution for Day9 {
             }
         }
 
-        Some(visited.len().to_string())
+        Solution::Unsigned(visited.len())
     }
 }
 
