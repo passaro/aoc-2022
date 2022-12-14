@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Grid<T> {
     pub col_count: usize,
     pub row_count: usize,
@@ -8,6 +8,14 @@ pub struct Grid<T> {
 }
 
 impl <T> Grid<T> {
+    pub fn new(col_count: usize, row_count: usize, initial_value: T) -> Self 
+    where 
+        T: Clone
+    {
+        let values = vec![initial_value; col_count * row_count];
+        Self { col_count, row_count, values }
+    }
+
     pub fn from_lines<F>(lines: impl Iterator<Item = String>, mut parse: F) -> Self 
     where 
         F: FnMut(char, &Position) -> T, 
@@ -28,6 +36,10 @@ impl <T> Grid<T> {
 
     pub fn at(&self, pos: &Position) -> &T {
         &self.values[pos.y * self.col_count + pos.x]
+    }
+
+    pub fn at_mut(&mut self, pos: &Position) -> &mut T {
+        &mut self.values[pos.y * self.col_count + pos.x]
     }
 
     pub fn neighbours(&self, pos: &Position) -> Vec<Position> {
