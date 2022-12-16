@@ -13,8 +13,10 @@ mod day12;
 mod day13;
 mod day14;
 mod day15;
+mod day16;
 
 mod grid;
+mod bitset;
 mod solution;
 
 use std::env;
@@ -47,7 +49,7 @@ fn solve_day(day: usize, lines: impl Iterator<Item = String>) -> (Solution, Solu
         };
     }
 
-    match_day_and_solve!(day, lines, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+    match_day_and_solve!(day, lines, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
 }
 
 fn main() {
