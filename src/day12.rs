@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use pathfinding::dijkstra;
+use pathfinding::prelude::dijkstra;
 use rayon::prelude::*;
 
 use crate::solution::{DaySolution, FromInput, Solution};
