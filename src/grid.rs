@@ -65,6 +65,10 @@ impl <T> Grid<T> {
             .cartesian_product(0..self.col_count)
             .map(|(y, x)| Position::new(x, y))
     }
+
+    pub fn is_valid(&self, pos: &Position) -> bool {
+        pos.x < self.col_count && pos.y < self.row_count
+    }
 }
 
 #[derive(Debug, Clone, Copy, Eq, Hash, Ord, PartialEq, PartialOrd)]
